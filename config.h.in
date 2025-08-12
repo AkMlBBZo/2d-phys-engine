@@ -1,0 +1,15 @@
+#pragma once
+
+#define MAIN_LOG_FILE "@MAIN_LOG_FILE@"
+#define APP_NAME "@APP_NAME@"
+
+namespace Bounds {
+
+constexpr float TOP    = 0;
+constexpr float BOTTOM = 1500;
+constexpr float LEFT   = 0;
+constexpr float RIGHT  = 2500;
+constexpr float WIDTH  = RIGHT - LEFT;
+constexpr float HEIGHT = BOTTOM - TOP;
+
+}  // namespace Bounds

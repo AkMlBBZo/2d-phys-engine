@@ -1,0 +1,6 @@
+.vscode
+build
+# .logs создадутся с помощью CMakeLists.txt при вызове cmake ..
+.logs
+# bat файл для сборки и запуска
+run.bat
