@@ -11,6 +11,7 @@ Renderer::Renderer()
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
     pointVertices.setPrimitiveType(sf::PrimitiveType::Points);
+    lineVertices.setPrimitiveType(sf::PrimitiveType::LineStrip);
 }
 
 void Renderer::objRender(objects::Point& point) {
@@ -25,8 +26,16 @@ void Renderer::addPoint(objects::Point& point) {
         sf::Vertex({point.getPosition() * math::Vector2(m_ratio_width, m_ratio_height), point.getColor(), {}}));
 }
 
-void Renderer::render(std::vector<std::unique_ptr<engine::objects::Point>>& points,
-                      std::vector<std::unique_ptr<engine::objects::MagneticPoint>>& magneticPoints) {
+void Renderer::addLine(objects::Line& line) {
+    lineVertices.append(sf::Vertex(
+        {line.getStart()->getPosition() * math::Vector2(m_ratio_width, m_ratio_height), line.getColor(), {}}));
+    lineVertices.append(
+        sf::Vertex({line.getEnd()->getPosition() * math::Vector2(m_ratio_width, m_ratio_height), line.getColor(), {}}));
+}
+
+void Renderer::render(std::vector<std::shared_ptr<objects::Point>>& points,
+                      std::vector<std::shared_ptr<objects::MagneticPoint>>& magneticPoints,
+                      std::vector<std::shared_ptr<objects::Line>>& lines) {
     clear();
     handleEvents();
 
@@ -42,6 +51,13 @@ void Renderer::render(std::vector<std::unique_ptr<engine::objects::Point>>& poin
     }
     window.draw(pointVertices);
     pointVertices.clear();
+    for (const auto& linePtr : lines) {
+        if (linePtr && linePtr->isValid()) {
+            addLine(*linePtr);
+        }
+    }
+    window.draw(lineVertices);
+    lineVertices.clear();
 
     display();
 }

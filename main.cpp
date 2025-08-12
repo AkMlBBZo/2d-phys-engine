@@ -9,28 +9,34 @@
 // auto logger = new AsyncLogger(std::make_unique<FileLogger>(MAIN_LOG_FILE)); - Logger.h
 
 int main() {
-    engine::core::PhysicsEngine eng(300);
+    engine::core::PhysicsEngine eng(100);
     engine::objects::Point point(engine::math::Vector2{100, 100});
-    engine::objects::MagneticPoint mp1(engine::physics::MagnetPole::NORTH, engine::physics::MaterialType::DEFAULT, 200,
-                                       1e5, {200, 100}, 5.0, 1.0, false, engine::colors::WHITE);
-    engine::objects::MagneticPoint mp2(engine::physics::MagnetPole::SOUTH, engine::physics::MaterialType::DEFAULT,
-                                       100000, 10, {300, 400}, 2.0, 1.0, true, engine::colors::CYAN);
-    engine::objects::MagneticPoint mp4(engine::physics::MagnetPole::SOUTH, engine::physics::MaterialType::DEFAULT, 200,
-                                       1000, {900, 400}, 2.0, 1.0, true, engine::colors::CYAN);
-    engine::objects::MagneticPoint mp3(engine::physics::MagnetPole::SOUTH, engine::physics::MaterialType::DEFAULT, 10,
-                                       10000, {200, 500}, 2.0, 1.0, true);
-    // eng.addPoint(point);
-    // eng.addPoint(mp1);
-    // eng.addPoint(mp2);
-    // eng.addPoint(mp4);
-    // eng.addPoint(mp3);
+    engine::objects::MagneticPoint mp1(engine::physics::MagnetPole::NORTH, engine::physics::MaterialType::DEFAULT, 10,
+                                       100, {200, 100}, 1.0, 1.0, false, engine::colors::RED);
+    engine::objects::MagneticPoint mp2(engine::physics::MagnetPole::NORTH, engine::physics::MaterialType::DEFAULT, 10,
+                                       100, {250, 150}, 1.0, 1.0, false, engine::colors::CYAN);
+    engine::objects::MagneticPoint ip1(engine::physics::MagnetPole::NONE, engine::physics::MaterialType::IRON, 10, 100,
+                                       {200, 150}, 1.0, 1.0, false, engine::colors::WHITE);
     int cnt = 0;
 
+    auto p1 = eng.addPoint(point);
+    auto p2 = eng.addPoint(mp1);
+    auto p3 = eng.addPoint(mp2);
+
+    auto line1 = eng.addLine(p1, p2);
+    auto line2 = eng.addLine(p1, p3);
+    auto line3 = eng.addLine(p2, p3);
+
     while (eng.isRunning()) {
-        if (cnt <= 200) {
+        if (cnt <= 50) {
             cnt++;
-            mp1.setPosition(mp1.getPosition() + engine::math::Vector2{1, 0});
-            eng.addPoint(mp1);
+            auto p1 = eng.addPoint(point);
+            auto p2 = eng.addPoint(mp1);
+            auto p3 = eng.addPoint(mp2);
+
+            auto line1 = eng.addLine(p1, p2);
+            auto line2 = eng.addLine(p1, p3);
+            auto line3 = eng.addLine(p2, p3);
         }
         eng.applyGravity();
         eng.applyMagnetic();

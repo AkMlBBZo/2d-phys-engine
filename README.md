@@ -17,6 +17,7 @@ A lightweight 2D physics engine implementing particle systems, constraints, and 
 ### Architecture & Data Layout  
 - [ ] Switch from AoS (Array of Structs) to SoA (Struct of Arrays) for SIMD optimizations  
 - [ ] Evaluate Entity-Component-System (ECS) for better scalability  
+- [ ] Perfect Forwarding support for efficient resource management 
 
 ### Physics & Constraints  
 - [ ] **Constraint Types**  
