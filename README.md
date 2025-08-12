@@ -1,42 +1,53 @@
-# 2d physics engine
+# 2D Physics Engine  
 
-**Currently implemented:**  
-•   Only points (basic particle system)  
+A lightweight 2D physics engine implementing particle systems, constraints, and collision detection.  
 
-**Dependencies:**
+## Current Features  
+- **Particle System**  
+  - Basic point-based physics  
+  - Mass, velocity, and force integration  
 
-•   CMake (>= 3.16)
-•   SFML (>= 3.0)
-•   C++ compiler with C++17 support
+## Dependencies  
+- **CMake** (>= 3.16)  
+- **SFML** (>= 3.0) (for rendering and window management)  
+- **C++17** compatible compiler  
 
-## Future Plans
+## Planned Features  
 
-This section outlines the planned features and improvements for future releases.
+### Architecture & Data Layout  
+- [ ] Switch from AoS (Array of Structs) to SoA (Struct of Arrays) for SIMD optimizations  
+- [ ] Evaluate Entity-Component-System (ECS) for better scalability  
 
-**Architecture & Data Layout:**
+### Physics & Constraints  
+- [ ] **Constraint Types**  
+  - `Line` (infinite constraint)  
+  - `Spring` (elastic connection)  
+  - `Rod` / `Stick` (fixed-length constraint)  
+- [ ] **Collision Detection**  
+  - Point vs. Line  
+  - Basic shape primitives (using `Point` and `Line` internally)  
+- [ ] **Damping**  
+  - Air resistance & friction simulation  
 
-•   [ ] Switch from AoS to SoA for SIMD optimizations.
-•   [ ] Explore alternative data-oriented design patterns (e.g., ECS) for improved performance and scalability.
+### Performance Optimizations  
+- [ ] Spatial partitioning (e.g., grids, quad/octrees)  
+- [ ] Multithreading support for parallel physics updates  
+- [ ] Profiling-guided optimizations  
 
-**Physics:**
+### Debugging & Diagnostics  
+- [ ] **Logging System**  
+  - Collision events  
+  - Constraint violations  
+  - Performance metrics  
+- [ ] **Debug Visualization**  
+  - Force vectors  
+  - Contact normals  
+  - Broad-phase boundaries  
 
-•   [ ] Implement constraint classes: `Line`, `Spring`, and `Rod/Stick` for fixed-length connections.
-•   [ ] Implement Shape and legacy classes for more complex object representation.  These classes will internally utilize `Point` and `Line` primitives.
-•   [ ] Implement point/line collision detection.
-•   [ ] Implement damping to simulate friction and air resistance.
+### Long-Term Goals  
+- [ ] GPU acceleration (via compute shaders or CUDA/OpenCL)  
+- [ ] Scene serialization (JSON/binary formats)  
 
-**Performance:**
+---  
 
-•   [ ] Improve performance of interactions using space partitioning.
-•   [ ] Profile and optimize critical sections of the code using profiling tools.
-•   [ ] Implement multithreading for parallelizing physics calculations.
-
-**Logging & Debugging**  
-•   [ ] Add logging system for debugging physics interactions.  
-•   [ ] Log collision events, constraint violations, and performance metrics.  
-•   [ ] Add runtime debug visualization (e.g., force vectors, collision normals).  
-
-**Long-Term Goals:**
-
-•   [ ] Explore potential GPU acceleration for physics calculations.
-•   [ ] Add serialization/deserialization for saving and loading physics scenes. 
+**Note:** Contributions are welcome! Open an issue or PR for feature requests/bug reports.  
