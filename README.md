@@ -2,10 +2,20 @@
 
 A lightweight 2D physics engine implementing particle systems, constraints, and collision detection.  
 
-## Current Features  
-- **Particle System**  
-  - Basic point-based physics  
-  - Mass, velocity, and force integration  
+## Current Features
+- **Particle System**
+  - Mass, velocity, and force integration
+  - Verlet integration with damping
+- **Spring System**
+  - Elastic constraints with rest length
+  - Velocity-based damping
+- **Performance**
+  - SIMD (AVX2) optimizations for batch processing
+  - Structure of Arrays (SoA) data layout
+  - Aligned memory allocator (32-byte alignment)
+- **Rendering**
+  - SFML-based visualization
+  - Points and springs debug rendering
 
 ## Dependencies  
 - **CMake** (>= 3.16)  
@@ -14,23 +24,25 @@ A lightweight 2D physics engine implementing particle systems, constraints, and 
 
 ## Planned Features  
 
-### Architecture & Data Layout  
-- [ ] Switch from AoS (Array of Structs) to SoA (Struct of Arrays) for SIMD optimizations  
+### Architecture
 - [ ] Evaluate Entity-Component-System (ECS) for better scalability  
 - [ ] Perfect Forwarding support for efficient resource management 
 
 ### Physics & Constraints  
 - [ ] **Constraint Types**  
-  - `Line` (infinite constraint)  
-  - `Spring` (elastic connection)  
-  - `Rod` / `Stick` (fixed-length constraint)  
+  - [ ] `Line` (infinite constraint)  
+  - [x] `Spring` (elastic connection)  
+  - [ ] `Rod` / `Stick` (fixed-length constraint)  
 - [ ] **Collision Detection**  
-  - Point vs. Line  
-  - Basic shape primitives (using `Point` and `Line` internally)  
+  - [ ] Point vs. Line  
+  - [ ] Basic shape primitives (using `Point` and `Line` internally)  
 - [ ] **Damping**  
-  - Air resistance & friction simulation  
+  - [ ] Air resistance & friction simulation  
 
 ### Performance Optimizations  
+- [x] SoA (Struct of Arrays) data layout
+- [x] SIMD optimizations (AVX2)
+- [x] Aligned memory allocator
 - [ ] Spatial partitioning (e.g., grids, quad/octrees)  
 - [ ] Multithreading support for parallel physics updates  
 - [ ] Profiling-guided optimizations  

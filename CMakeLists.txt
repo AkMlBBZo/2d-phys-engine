@@ -9,7 +9,7 @@ if(DEFINED ENV{VCPKG_ROOT})
         CACHE STRING "Vcpkg toolchain file")
 endif()
 
-# Для SFML
+# SFML
 find_package(SFML 3.0 COMPONENTS 
     Window 
     Graphics 
@@ -18,7 +18,10 @@ find_package(SFML 3.0 COMPONENTS
     REQUIRED
 )
 
-# not in use now
+add_compile_options(-mavx)
+add_compile_options(-mavx2)
+add_compile_options(-mfma)
+
 # # Logger
 # set(myLibsDir "D:/cppProjects/!myLibs")
 # if(NOT EXISTS "${myLibsDir}/logger/CMakeLists.txt")
@@ -26,45 +29,39 @@ find_package(SFML 3.0 COMPONENTS
 # endif()
 # add_subdirectory("${myLibsDir}/logger" "${CMAKE_BINARY_DIR}/logger")
 
-# log paths
 set(LOGS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.logs")
 set(MAIN_LOG_FILE "${LOGS_DIR}/logs.txt")
-# app name
+
 set(APP_NAME "engine")
 
 # adding log files
 file(MAKE_DIRECTORY "${LOGS_DIR}")
 file(APPEND "${MAIN_LOG_FILE}" "")
 
-# adding data to config
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/config.h
     @ONLY
 )
 
-# config.h will be here
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# Добавляем пути к заголовочным файлам
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/include  # Добавляем путь к вашей папке include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# Если у вас есть исходные файлы в src, добавляем их
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/*.cpp"
 )
 
-# Основной исполняемый файл
 add_executable(engine
     main.cpp
     ${ENGINE_SOURCES}
 )
 
 target_link_libraries(engine PRIVATE
-    # logger # not in use now
+    # logger
     SFML::Window
     SFML::Graphics
     SFML::Audio

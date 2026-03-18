@@ -1,15 +1,21 @@
 #pragma once
 
+#include <cstdint>
+
 #define MAIN_LOG_FILE "@MAIN_LOG_FILE@"
 #define APP_NAME "@APP_NAME@"
 
 namespace Bounds {
 
 constexpr float TOP    = 0;
-constexpr float BOTTOM = 1500;
+constexpr float BOTTOM = 65536;
 constexpr float LEFT   = 0;
-constexpr float RIGHT  = 2500;
+constexpr float RIGHT  = 65536;
 constexpr float WIDTH  = RIGHT - LEFT;
 constexpr float HEIGHT = BOTTOM - TOP;
+
+constexpr size_t CELL_SIZE    = 64;  // Space partition for collision processing
+constexpr size_t HEIGHT_CELLS = HEIGHT / CELL_SIZE;
+constexpr size_t WIDTH_CELLS  = WIDTH / CELL_SIZE;
 
 }  // namespace Bounds

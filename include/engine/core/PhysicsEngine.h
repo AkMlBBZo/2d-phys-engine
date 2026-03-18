@@ -1,45 +1,61 @@
 #ifndef PHYSICS_ENGINE_H
 #define PHYSICS_ENGINE_H
 
-#include <SFML/System.hpp>
-
-#include "engine/objects/Line.h"
-#include "engine/objects/MagneticPoint.h"
-#include "engine/objects/Point.h"
-#include "engine/rendering/Colors.h"
+#include "engine/objects/PointsSystem.h"
+#include "engine/objects/SpringsSystem.h"
 #include "engine/rendering/Renderer.h"
 
 namespace engine::core {
 
 class PhysicsEngine {
 private:
-    sf::Clock m_clock;
-    std::vector<std::shared_ptr<objects::Point>> m_points;
-    std::vector<std::shared_ptr<objects::MagneticPoint>> m_magnetic_points;
-    std::vector<std::shared_ptr<objects::Line>> m_lines;
+    objects::PointsSystem ps;
+    objects::SpringsSystem ss;
     Renderer renderer;
-    float m_g;
 
 public:
-    PhysicsEngine(float g = 9.8f);
-    std::shared_ptr<objects::Point> addPoint(objects::Point& point);
-    std::shared_ptr<objects::Point> addPoint(objects::MagneticPoint& point);
-    std::shared_ptr<objects::Line> addLine(objects::Line& line);
-    std::shared_ptr<objects::Line> addLine(std::shared_ptr<objects::Point>& p1, std::shared_ptr<objects::Point>& p2);
-    void applyGravity();
-    void applyMagnetic();
-    void applyLineStrength();
-    void update();
+    PhysicsEngine() : ss(&ps) {}
+    ~PhysicsEngine() = default;
 
-    const std::vector<std::shared_ptr<objects::Point>> getPoints() const;
-    std::vector<std::shared_ptr<objects::Point>> getPoints();
-    const std::vector<std::shared_ptr<objects::MagneticPoint>> getMagneticPoints() const;
-    std::vector<std::shared_ptr<objects::MagneticPoint>> getMagneticPoints();
-    const std::vector<std::shared_ptr<objects::Line>> getLines() const;
-    std::vector<std::shared_ptr<objects::Line>> getLines();
+    size_t addPoint(float pos_x, float pos_y, float mass) { return ps.addPoint(pos_x, pos_y, mass); }
 
-    void render();
-    bool isRunning() const;
+    uint32_t addSpring(uint32_t start_point, uint32_t end_point, float stiffness, float damping,
+                       float rest_length = -1.0f, float min_length = -1.0f, float max_length = -1.0f) {
+        return ss.addSpring(start_point, end_point, stiffness, damping, rest_length, min_length, max_length);
+    }
+
+    void applyForce(size_t idx, float force_x, float force_y) { ps.applyForce(idx, force_x, force_y); }
+    void applyGlobalForce(float force_x, float force_y) { ps.applyGlobalForce(force_x, force_y); }
+
+    void integrate(float dt, float damping = 0.95f) {
+        dt = std::min(dt, 0.01f);
+        ss.applySpringsForce(dt);
+        ps.integrate(dt, damping);
+    }
+
+    void render() {
+        renderer.clear();
+        renderer.handleEvents();
+        renderer.renderPoints(ps.positionsX(), ps.positionsY(), ps.size());
+        renderer.renderSprings(ps.positionsX(), ps.positionsY(), ss.startIndices(), ss.endIndices(), ss.size());
+        renderer.display();
+    }
+
+    bool isOpen() { return renderer.isWindowOpen(); }
+
+    std::tuple<float, float> pos(size_t point_idx) {
+        // if(point_idx >= ps.size()) => ?? (OK)
+        float* posx = ps.positionsX();
+        float* posy = ps.positionsY();
+        return {posx[point_idx], posy[point_idx]};
+    }
+
+    std::tuple<float, float> prevPos(size_t point_idx) {
+        // if(point_idx >= ps.size()) => ?? (OK)
+        float* posx = ps.prevPositionsX();
+        float* posy = ps.prevPositionsY();
+        return {posx[point_idx], posy[point_idx]};
+    }
 };
 
 }  // namespace engine::core
